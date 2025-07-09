@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export default function AdminDoctorsPage() {
+export default function DoctorsList() {
   const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
@@ -12,17 +12,34 @@ export default function AdminDoctorsPage() {
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Doctors List</h2>
+      <h1 className="text-2xl font-bold mb-4">Doctors List</h1>
       {doctors.length === 0 ? (
-        <p>No doctors found.</p>
+        <p>No doctors available.</p>
       ) : (
-        <ul className="space-y-2">
-          {doctors.map((doc: any, index: number) => (
-            <li key={index} className="p-4 bg-white shadow border rounded">
-              <strong>{doc.name}</strong> ({doc.email}) - {doc.city}, {doc.state}
-            </li>
-          ))}
-        </ul>
+        <table className="min-w-full bg-white rounded shadow">
+          <thead>
+            <tr className="bg-blue-100 text-left">
+              <th className="p-3">Name</th>
+              <th className="p-3">Email</th>
+              <th className="p-3">City</th>
+              <th className="p-3">State</th>
+              <th className="p-3">Country</th>
+              <th className="p-3">Postal Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            {doctors.map((doc, index) => (
+              <tr key={index} className="border-t">
+                <td className="p-3 font-medium">{doc.name}</td>
+                <td className="p-3">{doc.email}</td>
+                <td className="p-3">{doc.city}</td>
+                <td className="p-3">{doc.state}</td>
+                <td className="p-3">{doc.country}</td>
+                <td className="p-3">{doc.postalcode}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );
