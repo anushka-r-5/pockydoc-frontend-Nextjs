@@ -1,19 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export default function OnboardingForm() {
-  const router = useRouter();
+export default function DoctorOnboarding() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     contactno: "",
-    country: "",
     city: "",
     state: "",
+    country: "",
     postalcode: "",
-    status: "pending",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,27 +20,43 @@ export default function OnboardingForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const existing = JSON.parse(localStorage.getItem("submittedDoctors") || "[]");
-    const updated = [...existing, formData];
-    localStorage.setItem("submittedDoctors", JSON.stringify(updated));
-    alert("Doctor submitted successfully!");
-    router.push("/doctor/dashboard");
+    existing.push(formData);
+    localStorage.setItem("submittedDoctors", JSON.stringify(existing));
+    alert("Doctor onboarded successfully!");
+    setFormData({
+      name: "",
+      email: "",
+      contactno: "",
+      city: "",
+      state: "",
+      country: "",
+      postalcode: "",
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 bg-white shadow-md mt-6 space-y-4">
-      <h2 className="text-xl font-bold">Doctor Sign-Up</h2>
-      {["name", "email", "contactno", "country", "city", "state", "postalcode"].map((field) => (
-        <input
-          key={field}
-          name={field}
-          placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-          value={(formData as any)[field]}
-          onChange={handleChange}
-          className="w-full border px-3 py-2 rounded"
-          required
-        />
-      ))}
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Submit</button>
-    </form>
+    <div className="max-w-xl mx-auto mt-10 p-8 bg-white rounded shadow">
+      <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">Doctor Onboarding Form</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {["name", "email", "contactno", "city", "state", "country", "postalcode"].map((field) => (
+          <input
+            key={field}
+            type="text"
+            name={field}
+            placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+            value={(formData as any)[field]}
+            onChange={handleChange}
+            required
+            className="w-full p-3 border border-gray-300 rounded"
+          />
+        ))}
+        <button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+        >
+          Submit Doctor Info
+        </button>
+      </form>
+    </div>
   );
 }
